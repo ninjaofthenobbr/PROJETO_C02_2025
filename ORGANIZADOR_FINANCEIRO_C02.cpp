@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <vector>
 #include <ctime>
 #include <iomanip>
 
@@ -15,26 +14,26 @@ string obterData() {
     return string(buffer);
 }
 
-vector<string> separar(string linha, char delim) {
-    vector<string> partes;
+int separar(string linha, char delim, string partes[], int maxPartes) {
     string parte = "";
+    int count = 0;
     for (size_t i = 0; i < linha.length(); i++) {
-        if (linha[i] == delim) {
-            partes.push_back(parte);
+        if (linha[i] == delim && count < maxPartes - 1) {
+            partes[count++] = parte;
             parte = "";
         } else {
             parte += linha[i];
         }
     }
-    partes.push_back(parte);
-    return partes;
+    partes[count++] = parte;
+    return count;
 }
 
 double stringParaDouble(string s) {
     double resultado = 0.0;
     double multiplicador = 0.1;
     bool aposVirgula = false;
-    
+
     for (size_t i = 0; i < s.length(); i++) {
         if (s[i] == '.' || s[i] == ',') {
             aposVirgula = true;
@@ -97,7 +96,6 @@ void adicionarGasto() {
     cout << endl << "[SUCESSO] Gasto registrado!" << endl;
 }
 
-
 void definirGanho() {
     double ganho;
     int dia;
@@ -151,32 +149,32 @@ void verGastos() {
     double total = 0;
     int contador = 0;
 
-    cout << "+-----------------+--------------+--------------------+" << endl;
-    cout << "|      Data       |   Valor (R$) |     Descricao      |" << endl;
-    cout << "+-----------------+--------------+--------------------+" << endl;
+    cout << "Data          Valor(R$)    Descricao" << endl;
+    cout << "----------------------------------------" << endl;
+
+    string partes[10];
 
     while (getline(arquivo, linha)) {
         if (linha.empty()) continue;
 
-        vector<string> dados = separar(linha, ':');
+        int n = separar(linha, ':', partes, 10);
 
-        if (dados.size() >= 3) {
-            double valor = stringParaDouble(dados[1]);
+        if (n >= 3) {
+            double valor = stringParaDouble(partes[1]);
+            string desc = partes[2];
 
-            string desc = dados[2];
             if (desc.length() > 18)
                 desc = desc.substr(0, 18);
 
-            cout << "| " << setw(15) << left << dados[0]
-                 << "| " << setw(12) << right << fixed << setprecision(2) << valor
-                 << " | " << setw(18) << left << desc << "|" << endl;
+        
+            cout << partes[0] << "    " << fixed << setprecision(2) << valor << "    " << desc << endl;
 
             total += valor;
             contador++;
         }
     }
 
-    cout << "+-----------------+--------------+--------------------+" << endl << endl;
+    cout << endl;
     arquivo.close();
 
     ifstream ganhoArq("ganho.txt");
@@ -186,10 +184,10 @@ void verGastos() {
         string gLinha;
         getline(ganhoArq, gLinha);
 
-        vector<string> dados = separar(gLinha, ':');
+        int n = separar(gLinha, ':', partes, 10);
 
-        if (dados.size() >= 1) {
-            ganho = stringParaDouble(dados[0]);
+        if (n >= 1) {
+            ganho = stringParaDouble(partes[0]);
         }
         ganhoArq.close();
     }
