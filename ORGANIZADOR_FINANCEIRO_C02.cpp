@@ -74,18 +74,18 @@ void adicionarGasto() {
 
     if (cin.fail()) {
         cin.clear();
-        cin.ignore(10000, '\n');
-        cout << "[ERRO] Valor invalido!" << endl;
+        cin.ignore(100, '\n');
+        cout << "Valor invalido!" << endl;
         return;
     }
 
-    cin.ignore(10000, '\n');
+    cin.ignore(100, '\n');
 
     cout << "Descricao: ";
     getline(cin, descricao);
 
     if (descricao.empty()) {
-        cout << "[ERRO] Descricao nao pode ser vazia!" << endl;
+        cout << "Descricao nao pode ser vazia!" << endl;
         return;
     }
 
@@ -93,7 +93,7 @@ void adicionarGasto() {
     arquivo << obterData() << ":" << valor << ":" << descricao << endl;
     arquivo.close();
 
-    cout << endl << "[SUCESSO] Gasto registrado!" << endl;
+    cout << endl << "Gasto registrado!" << endl;
 }
 
 void definirGanho() {
@@ -109,8 +109,8 @@ void definirGanho() {
 
     if (cin.fail() || ganho < 0) {
         cin.clear();
-        cin.ignore(10000, '\n');
-        cout << "[ERRO] Ganho invalido!" << endl;
+        cin.ignore(100, '\n');
+        cout << "Ganho invalido!" << endl;
         return;
     }
 
@@ -119,12 +119,12 @@ void definirGanho() {
 
     if (cin.fail() || dia < 1 || dia > 31) {
         cin.clear();
-        cin.ignore(10000, '\n');
-        cout << "[ERRO] Dia invalido!" << endl;
+        cin.ignore(100, '\n');
+        cout << "Dia invalido!" << endl;
         return;
     }
 
-    cin.ignore(10000, '\n');
+    cin.ignore(100, '\n');
 
     ofstream arquivo("ganho.txt");
     arquivo << ganho << ":" << dia;
@@ -141,7 +141,7 @@ void verGastos() {
     ifstream arquivo("gastos.txt");
 
     if (!arquivo.is_open()) {
-        cout << "[INFO] Nenhum gasto registrado." << endl;
+        cout << "Nenhum gasto registrado." << endl;
         return;
     }
 
@@ -199,9 +199,9 @@ void verGastos() {
     cout << "Qtd de Gastos:   " << contador << endl;
 
     if (saldo >= 0)
-        cout << "[SALDO POSITIVO] R$ " << fixed << setprecision(2) << saldo << endl << endl;
+        cout << "R$ " << fixed << setprecision(2) << saldo << endl << endl;
     else
-        cout << "[SALDO NEGATIVO] -R$ " << fixed << setprecision(2) << -saldo << endl << endl;
+        cout << "-R$ " << fixed << setprecision(2) << -saldo << endl << endl;
 }
 
 void menu() {
@@ -222,19 +222,19 @@ void menu() {
 
         if (cin.fail()) {
             cin.clear();
-            cin.ignore(10000, '\n');
-            cout << "[ERRO] Digite um numero valido!" << endl;
+            cin.ignore(100, '\n');
+            cout << "Digite um numero valido!" << endl;
             continue;
         }
 
-        cin.ignore(10000, '\n');
+        cin.ignore(100, '\n');
 
         switch (opcao) {
             case 1: definirGanho(); break;
             case 2: adicionarGasto(); break;
             case 3: verGastos(); break;
-            case 4: cout << "[SAIDA] Ate logo!" << endl; break;
-            default: cout << "[ERRO] Opcao invalida." << endl;
+            case 4: cout << "Ate logo!" << endl; break;
+            default: cout << " Opcao invalida." << endl;
         }
     }
 }
@@ -243,3 +243,4 @@ int main() {
     menu();
     return 0;
 }
+
